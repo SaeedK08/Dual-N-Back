@@ -49,7 +49,7 @@ struct RoundFinishedOverlay: View {
             .background(Color(.systemGray6))
             .cornerRadius(12)
 
-            // Optional score saving (Requirement H-03)
+            // Optional score saving
             if !isSaved {
                 HStack {
                     TextField("Name (optional)", text: $playerName)

@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Centre of the game screen: the grid, the spoken-letter card, or both (dual), depending on the stimulus mode.
-/// Shows the letter on screen when no speech voice is available (H-05, exam Q20).
+/// Shows the letter on screen when no speech voice is available.
 struct StimulusAreaView: View {
     @EnvironmentObject var viewModel: GameViewModel
 

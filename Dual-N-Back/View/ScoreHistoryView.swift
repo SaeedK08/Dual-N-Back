@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Score history screen sortable by Score, Date, or Name (Requirement H-03).
+/// Score history screen sortable by Score, Date, or Name.
 struct ScoreHistoryView: View {
     @EnvironmentObject var viewModel: GameViewModel
     @State private var sortOption: ScoreSortOption = .score

@@ -27,13 +27,13 @@ struct HomeView: View {
                     }
                     .padding(.top, 8)
 
-                    // High Score Card (Requirement B-01)
+                    // High Score Card
                     highScoreCard
 
-                    // Mode Selector (Requirement B-02)
+                    // Mode Selector
                     modeSelectorSection
 
-                    // Current Settings Summary (Requirements B-03 & D-04)
+                    // Current Settings Summary
                     settingsSummaryCard
 
                     // Start Training Button
@@ -79,7 +79,7 @@ struct HomeView: View {
         }
     }
 
-    // MARK: - High Score Card (Requirement B-01)
+    // MARK: - High Score Card
     private var highScoreCard: some View {
         HStack {
             Image(systemName: "trophy.fill")
@@ -103,7 +103,7 @@ struct HomeView: View {
         .cornerRadius(14)
     }
 
-    // MARK: - Stimulus Mode Selector (Requirement B-02)
+    // MARK: - Stimulus Mode Selector
     private var modeSelectorSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("STIMULUS MODE")
@@ -118,7 +118,7 @@ struct HomeView: View {
             }
             .pickerStyle(.segmented)
 
-            // TTS Fallback Notice (Requirement H-05)
+            // TTS Fallback Notice
             if !viewModel.isVoiceAvailable && viewModel.settings.stimulusMode != .visual {
                 HStack(spacing: 8) {
                     Image(systemName: "speaker.slash.fill")

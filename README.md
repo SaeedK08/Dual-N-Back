@@ -1,41 +1,59 @@
 # Dual N-Back — Cognitive Working Memory Training (iOS / iPadOS)
 
-A native iOS and iPadOS Dual N-Back application built with **Swift**, **SwiftUI**, and **Core Data**, developed for university course HI1033 / CM2023. 
+Native iOS and iPadOS Dual N-Back application built with **Swift**, **SwiftUI**, and **Core Data**, designed for scientific cognitive working memory training.
 
-The application implements all basic (B-01–B-09), detailed (D-01–D-09), and all **four** higher-level requirements (H-01–H-05), featuring strict MVVM architecture, comprehensive unit testing, and zero third-party dependencies.
+Features a decoupled MVVM architecture, native Core Data persistence, custom responsive geometry for all device orientations, comprehensive unit testing, and zero third-party dependencies.
+
+---
+
+## 📸 App Preview
+
+<p align="center">
+  <img src="screenshots/home.png" height="350" alt="Home Screen" />
+  &nbsp;&nbsp;
+  <img src="screenshots/settings.png" height="350" alt="Settings Screen" />
+  &nbsp;&nbsp;
+  <img src="screenshots/gameplay_portrait.png" height="350" alt="Gameplay Portrait" />
+</p>
+
+<p align="center">
+  <img src="screenshots/gameplay_landscape.png" height="200" alt="Gameplay Landscape" />
+  <br>
+  <em>Ergonomic Two-Thumb Controls in Landscape Orientation</em>
+</p>
 
 ---
 
 ## 🌟 Key Features
 
-### 1. Training Modes & Dual N-Back (H-01)
+### 1. Training Modes & Dual N-Back
 - **Visual Mode:** Highlights dynamic cells across a scalable grid ($3\times3$, $4\times4$, $5\times5$).
 - **Auditory Mode:** Speaks phonetically distinct letters (`C`, `H`, `K`, `L`, `Q`, `R`, `S`, `T`) designed to eliminate acoustic confusion.
 - **Dual Mode:** Simultaneous, independent visual and auditory sequences with dedicated input tracks and independent match evaluation.
 
 ### 2. Sequence Engine & Anti-Spam Scoring
-- **Sequence Logic (B-08):** Guarantees that the first $N$ events can never be matches ($i - n < 0$), with an empirical match-rate strictly enforced between 20% and 40%.
-- **Weighted Scoring (B-09, Q11):** Weighted points (Hit: `+2`, False Tap: `-2`, Miss: `-1`) with a hard floor at zero (`max(0, ...)`), mathematically neutralizing button spamming.
+- **Sequence Logic:** Guarantees that the first $N$ events can never be matches ($i - n < 0$), with an empirical match-rate strictly enforced between 20% and 40%.
+- **Weighted Scoring:** Weighted points (Hit: `+2`, False Tap: `-2`, Miss: `-1`) with a hard floor at zero (`max(0, ...)`), mathematically neutralizing button spamming.
 - **Division-by-Zero Protection:** Defensive calculations prevent `NaN` or crashes if zero matches occur.
 
-### 3. Persistent Settings (H-02)
+### 3. Persistent Settings
 - Configure N-Back level ($1$–$8$), event duration ($1.0$–$3.0\text{s}$), events per round ($10$–$50$), grid dimensions ($3\times3$–$5\times5$), and letter vocabulary count ($4$–$8$).
 - Auto-persists to disk via `UserDefaults` using `JSONEncoder` through a clean `didSet` observer.
 
-### 4. Core Data Score History (H-03)
+### 4. Core Data Score History
 - Persists player name, score, N-level, and completion timestamp to an ACID-compliant local **SQLite** database via Core Data.
 - Interactive **Score History** screen featuring `NSSortDescriptor` sorting:
   - **By Score:** Highest score first (with date tie-breaking).
   - **By Date:** Most recent round first.
   - **By Name:** Alphabetical order ($A$–$Z$) using case-insensitive comparison.
 
-### 5. Responsive Layout & Ergonomics (H-04)
-- **Dynamic Geometry (Q24):** The grid calculates `min(width, height)` with `.aspectRatio(1, contentMode: .fit)`, guaranteeing an exact 1:1 square on any screen size without clipping.
+### 5. Responsive Layout & Ergonomics
+- **Dynamic Geometry:** The grid calculates `min(width, height)` with `.aspectRatio(1, contentMode: .fit)`, guaranteeing an exact 1:1 square on any screen size without clipping.
 - **Two-Thumb Landscape Mode:** On iPhone in landscape (`verticalSizeClass == .compact`), match controls transform into full-height left and right sidebars right under the player's thumbs, leaving the center clear for the grid.
 
-### 6. Accessibility & TTS Fallback (H-05)
-- **Oversized Touch Targets (Q25):** Match buttons measure $150\text{pt}$ tall in portrait and $140\text{pt}$ wide full-height in landscape ($\approx 15\times$ to $28\times$ larger than Apple's $44\times44\text{pt}$ HIG minimum).
-- **Text-To-Speech Fallback (Q20):** If system speech voices are unavailable, the app automatically switches to an on-screen visual letter fallback with non-blocking user alerts.
+### 6. Accessibility & TTS Fallback
+- **Oversized Touch Targets:** Match buttons measure $150\text{pt}$ tall in portrait and $140\text{pt}$ wide full-height in landscape ($\approx 15\times$ to $28\times$ larger than Apple's $44\times44\text{pt}$ HIG minimum).
+- **Text-To-Speech Fallback:** If system speech voices are unavailable, the app automatically switches to an on-screen visual letter fallback with non-blocking user alerts.
 - **VoiceOver:** All controls include explicit accessibility labels and hints.
 
 ### 7. Smooth Stimulus Fade UX
@@ -77,7 +95,7 @@ Dual-N-Back/
 │   └── StimulusAreaView.swift    # Center container switching on visual, audio, or dual modes + TTS fallback
 │
 └── Dual_N_BackTests/             # Automated test suite
-    └── Dual_N_BackTests.swift    # 13 comprehensive XCTests (100% passing in 0.001s)
+    └── Dual_N_BackTests.swift    # 13 comprehensive XCTests 
 ```
 
 ---
@@ -96,8 +114,8 @@ The test suite covers core business logic, boundary edge cases, and mutation ver
 | `testScoreNeverDropsBelowZero` | `ScoreCalculator` | Raw negative points safely floor at 0. |
 | `testSpammingYieldsZeroScore` | `ScoreCalculator` | Equal hits and false taps neutralize to 0 pts and 0% accuracy. |
 | `testZeroMatchesReturnsZeroWithoutCrashing` | `ScoreCalculator` | Zero matches safely returns (0, 0.0) without division by zero. |
-| `testMatchPressIgnoredDuringFirstNEvents` | `StimulusTrack` | Pressing match when $i < n$ is ignored (D-07). |
-| `testDoublePressOnSameEventIsIgnored` | `StimulusTrack` | Duplicate presses within the same event tick are ignored (D-08, Q28). |
+| `testMatchPressIgnoredDuringFirstNEvents` | `StimulusTrack` | Pressing match when $i < n$ is guarded and ignored. |
+| `testDoublePressOnSameEventIsIgnored` | `StimulusTrack` | Duplicate presses within the same event tick are guarded and ignored. |
 | `testCorrectMatchIncrementsHits` | `StimulusTrack` | Valid match press increments hit count. |
 | `testIncorrectMatchIncrementsFalseTaps` | `StimulusTrack` | Non-match press increments false tap count. |
 | `testUnpressedMatchIncrementsMissesOnAdvance` | `StimulusTrack` | Unpressed match increments misses on tick advance. |
@@ -116,7 +134,7 @@ The test suite covers core business logic, boundary edge cases, and mutation ver
 
 1. **Clone the repository:**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/SaeedK08/Dual-N-Back.git
    cd Dual-N-Back
    ```
 

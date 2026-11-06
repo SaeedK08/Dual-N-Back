@@ -1,8 +1,8 @@
 import SwiftUI
 
 /// One match button (position or sound). Colours itself from the ViewModel's feedback state,
-/// is disabled during the first n events (D-07), and only forwards the tap.
-/// A large, full-section button, so the minimum touch-target size is met (H-05, exam Q25).
+/// is disabled during the first n events, and forwards user taps.
+/// A large, full-section button meeting Apple's touch-target guidelines.
 struct MatchButton: View {
     enum Modality { case visual, audio }
 

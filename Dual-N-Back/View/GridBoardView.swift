@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Visual stimulus grid (gridSize x gridSize). The active cell lights up.
-/// Stays square on every screen: the side is the smaller of the available width and height (exam Q24).
+/// Stays square on every screen: the side is the smaller of the available width and height.
 struct GridBoardView: View {
     @EnvironmentObject var viewModel: GameViewModel
 

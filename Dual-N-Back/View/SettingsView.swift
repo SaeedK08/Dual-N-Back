@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Settings sheet allowing users to customize round parameters (Requirement H-02).
+/// Settings sheet allowing users to customize round parameters.
 struct SettingsView: View {
     @EnvironmentObject var viewModel: GameViewModel
     @Environment(\.dismiss) private var dismiss
