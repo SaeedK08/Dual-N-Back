@@ -10,6 +10,10 @@ import AVFoundation
 /// Handles text-to-speech for letter stimuli and announcements.
 @MainActor
 final class SpeechService {
+    var isVoiceAvailable: Bool {
+        (AVSpeechSynthesisVoice(language: "en-US") ?? AVSpeechSynthesisVoice.speechVoices().first) != nil
+    }
+    
     private let synthesizer = AVSpeechSynthesizer()
     
     func speak(_ text: String) {
@@ -17,7 +21,7 @@ final class SpeechService {
             synthesizer.stopSpeaking(at: .immediate)
         }
         let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US") ?? AVSpeechSynthesisVoice.speechVoices().first
         utterance.rate = 0.5
         synthesizer.speak(utterance)
     }

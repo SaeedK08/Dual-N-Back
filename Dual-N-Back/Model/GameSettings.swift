@@ -17,9 +17,30 @@ enum StimulusMode: String, CaseIterable, Identifiable, Codable {
 }
 
 /// Stores configuration settings for an N-Back round with default values.
-struct GameSettings: Codable, Equatable {
+struct GameSettings: Codable {
     var stimulusMode: StimulusMode = .dual
     var n: Int = 2
     var eventDuration: TimeInterval = 2.5
     var eventsPerRound: Int = 20
+    var gridSize: Int = 3
+    var letterCount: Int = 8
+
+    private static let storageKey = "SavedGameSettings"
+                                                                                                                        
+/// Saves the current settings to disk.
+    func save() {
+        if let encoded = try? JSONEncoder().encode(self) {
+            UserDefaults.standard.set(encoded, forKey: Self.storageKey)
+        }
+    }
+                                                                                                                        
+/// Loads saved settings from disk, or returns defaults if none exist yet.
+    static func load() -> GameSettings {
+        if let data = UserDefaults.standard.data(forKey: Self.storageKey),
+           let saved = try? JSONDecoder().decode(GameSettings.self, from: data) {
+            return saved
+        }
+            
+        return GameSettings()
+    }
 }

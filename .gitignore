@@ -1,0 +1,12 @@
+# Xcode
+xcuserdata/
+*.xcuserstate
+project.xcworkspace/xcuserdata/
+*.xcscmblueprint
+
+# macOS
+.DS_Store
+*/.DS_Store
+
+# docs
+docs/
